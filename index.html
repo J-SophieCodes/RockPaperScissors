@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rock Paper Scissors</title>
+  <meta charset="UTF-8"/>
+</head>
+<body>
+  <script>
+      function computerPlay(choices){
+          /* Randomly returns either ‘Rock’, ‘Paper’ or ‘Scissors’ as 
+          the computer selection. */
+          return choices[Math.floor(Math.random() * choices.length)];
+      }
+
+      function playRound(playerSelection, computerSelection) {
+          /* Takes two parameters - the player and computer selections -
+          and return a string declaring the winner of the round like so: 
+          "You Lose! Paper beats Rock" */
+          /* The function is case insensitive. */
+          if (playerSelection.match(/rock/i)) {
+              return (computerSelection == 'rock'? draw(playerSelection, computerSelection) : computerSelection == 'paper'? computerWins(playerSelection, computerSelection) : playerWins(playerSelection, computerSelection));
+          }
+          else if (playerSelection.match(/paper/i)) {
+              return (computerSelection == 'rock'? playerWins(playerSelection, computerSelection) : computerSelection == 'paper'? draw(playerSelection, computerSelection) : computerWins(playerSelection, computerSelection));
+          }
+          else if (playerSelection.match(/scissors/i)) {
+              return (computerSelection == 'rock'? computerWins(playerSelection, computerSelection) : computerSelection == 'paper'? playerWins(playerSelection, computerSelection) : draw(playerSelection, computerSelection));
+          }
+          else {
+              return (playRound(playerSelection = prompt('Invalid input. Try again. Rock, paper or scissors?'), computerSelection));
+          }
+      }
+
+      function draw(playerSelection, computerSelection) {
+          //When the round is tied, display message.
+          alert('You played: '+playerSelection+'\nComputer played: '+computerSelection+'\nResult: Draw!');
+          return;
+      }
+
+      function playerWins(playerSelection, computerSelection) {
+          //When player wins the round, display message and playerScore + 1
+          alert('You played: '+ playerSelection+'\nComputer played: '+computerSelection+'\nResult: You win! '+capitalize(playerSelection)+' beats '+capitalize(computerSelection));
+          return (++playerScore);
+      }
+      
+      function computerWins(playerSelection, computerSelection) {
+          //When computer wins the round, display message and computerScore + 1
+          alert('You played: '+playerSelection+'\nComputer played: '+computerSelection+'\nResult: You lose! '+capitalize(computerSelection)+' beats '+capitalize(playerSelection));
+          return (++computerScore);
+      }
+
+      function capitalize(input) {
+          //Capitalize only first letter of word.
+          return (input[0].toUpperCase() + input.slice(1).toLowerCase())
+      }
+
+      function game(rounds) {
+          //Plays the user-defined number of rounds.
+          for (let i=0; i<rounds; i++) {
+            const playerSelection = prompt('Round '+(i+1)+': Rock, paper or scissors?');
+            const computerSelection = computerPlay(choices);
+            playRound(playerSelection, computerSelection);
+            alert('SCOREBOARD\n\nYOU '+playerScore+' : COMPUTER '+computerScore);
+            if (playerScore > rounds/2 || computerScore > rounds/2) {break;} //First to win more than half the rounds end the game.
+          }
+          return (playerScore==computerScore? alert('Draw!') : playerScore>computerScore? alert('You win!') : alert('You lost :( Better luck next time!'))
+      }
+
+      const choices = ['rock', 'paper', 'scissors'];
+      let playerScore = 0;
+      let computerScore = 0;
+      
+      do {
+        playerScore = 0; //resets score
+        computerScore = 0; //resets score
+        const rounds = prompt("Let's play! How many rounds do you want to play?");
+        game(rounds);
+      } while (prompt('Play again? Yes/No').match(/yes/i));
+                  
+  </script>
+</body>
+</html>
